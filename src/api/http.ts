@@ -1,6 +1,6 @@
 import AxiosInstance, { AxiosStatic, AxiosPromise, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-// import { message } from 'antd';
+// import { Snackbar } from '@material-ui/core/';
 // import store from '../store/index';
 // import LocalStore from '../utils/LocalStore';
 
@@ -41,11 +41,17 @@ class Http {
          */
         this.axios.interceptors.response.use(
             (res: AxiosResponse) => {
-                if (res.data.status === "500") {
+
+                if (res.data.code === "500") {
                     // message.error('服务器错误')
+                    console.log('服务端错误');
+
+
                 }
-                if (res.data.status !== 0) {
+                if (res.data.code === "501") {
                     // message.error(res.data.message || "服务器异常")
+                    console.log(res.data.message || "服务器异常");
+
                 }
                 return Promise.resolve(res.data)
             },

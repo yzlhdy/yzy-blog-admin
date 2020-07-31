@@ -13,6 +13,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import http from "../../api/http";
+import { useSnackbar } from 'notistack';
+import { RouteComponentProps } from "react-router-dom";
+
+
+
 
 function Copyright() {
   return (
@@ -61,11 +66,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface PropsData {
-  username?: string;
-  password?: string;
+  history: RouteComponentProps
 }
 
-const Login: React.FC = () => {
+const Login: React.FC<PropsData> = ({ history }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -88,9 +93,20 @@ const Login: React.FC = () => {
       username: username,
       password: password,
     };
-    http.post("user/login", params).then((result) => {
-      console.log(result);
-    });
+    http.post('user/login', params).then(res => {
+
+
+      if (res.data.token) {
+        enqueueSnackbar('登录成功', {
+          variant: 'success',
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'center',
+          },
+        })
+        // history.history.push("/home")
+      }
+    })
   };
   return (
     <Grid container component="main" className={classes.root}>

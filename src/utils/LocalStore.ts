@@ -90,4 +90,4 @@ class LocalStore {
 
 }
 
-export default LocalStore;
+export default new LocalStore();
